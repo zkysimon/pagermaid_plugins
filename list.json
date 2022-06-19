@@ -59,6 +59,16 @@
             "supported": true,
             "des-short": "查询用户或机器人分配的 DC，查询到各个DC区的延时",
             "des": ",dc ，,pingdc"
+        },
+        {
+            "name": "bing",
+            "version": "1.0",
+            "section": "chat",
+            "maintainer": "zimk",
+            "size": "1.4 kb",
+            "supported": true,
+            "des-short": "使用 bing 查询",
+            "des": "使用 bing 查询"
         }
     ]
 }
