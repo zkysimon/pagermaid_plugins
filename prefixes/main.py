@@ -12,6 +12,9 @@ from pagermaid.utils import Message, execute
     parameters="[旧符号] [新符号]"
 )
 async def prefixes(_: Client, msg: Message):
+    arg = msg.arguments
+    if not arg:
+        return msg.edit("参数错误")
     old_prefixes = msg.arguments.split(" ")[0]
     new_prefixes = msg.arguments.split(" ")[1]
     result = await execute(f"sed -i \'s/pattern = fr\"^{old_prefixes}/pattern = fr\"^{new_prefixes}/g\' pagermaid/listener.py")
