@@ -1,5 +1,4 @@
 from pyrogram import Client
-from pyrogram.types import User
 from pagermaid.listener import listener
 from pagermaid.utils import Message, execute
 
