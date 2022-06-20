@@ -1,3 +1,4 @@
+from sys import exit
 from pagermaid.listener import listener
 from pagermaid.utils import Message, execute
 from pagermaid.modules.reload import reload_all
@@ -19,4 +20,4 @@ async def prefixes(msg: Message):
     if len(result) > 0:
         await msg.edit(result)
     await msg.edit("修改成功，重启中。")
-    reload_all()
+    exit(1)
