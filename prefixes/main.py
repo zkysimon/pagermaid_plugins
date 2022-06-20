@@ -1,8 +1,7 @@
-from sys import exit
 from pyrogram import Client
 from pagermaid.listener import listener
 from pagermaid.utils import Message, execute
-
+from pagermaid.modules.reload import reload_all
 
 @listener(
     is_plugin=True,
@@ -21,4 +20,4 @@ async def prefixes(_: Client, msg: Message):
     if len(result) > 0:
         await msg.edit(result)
     await msg.edit("修改成功，重启中。")
-    exit(1)
+    reload_all()
