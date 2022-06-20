@@ -68,7 +68,7 @@ async def mtts(_: Client, msg: Message):
                                                     model.Gender,
                                                     model.LocaleName)
         await msg.edit(s)
-    elif opt is not None and opt != " " and opt != ' ':
+    elif opt and opt != " ":
         config = await config_check()
         mp3_buffer = await cmtts.mtts(text=opt,
                                       short_name=config["short_name"],
@@ -85,7 +85,7 @@ async def mtts(_: Client, msg: Message):
             await msg.reply_voice(
                 mp3_path, reply_to_message_id=replied_msg.id)
             await msg.delete()
-    elif replied_msg is not None:
+    elif replied_msg:
         config = await config_check()
         mp3_buffer = await cmtts.mtts(text=replied_msg.text,
                                       short_name=config["short_name"],
