@@ -1,4 +1,3 @@
-from pyrogram import Client
 from pagermaid.listener import listener
 from pagermaid.utils import Message, execute
 from pagermaid.modules.reload import reload_all
@@ -10,7 +9,7 @@ from pagermaid.modules.reload import reload_all
     description="更改命令前缀",
     parameters="[旧符号] [新符号]"
 )
-async def prefixes(_: Client, msg: Message):
+async def prefixes(msg: Message):
     arg = msg.arguments
     if not arg:
         return msg.edit("参数错误")
