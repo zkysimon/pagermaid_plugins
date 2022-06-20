@@ -17,7 +17,7 @@ async def dc(_: Client, msg: Message):
     try:
         if reply:
             user = await _.get_users(reply.from_user.id)
-        if not reply:
+        else:
             user = await _.get_me()
     except:
         msg.edit("请回复一名用户或者机器人使用。")
