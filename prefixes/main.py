@@ -21,4 +21,4 @@ async def prefixes(_: Client, msg: Message):
     if len(result) > 0:
         await msg.edit(result)
     await msg.edit("修改成功，重启中。")
-    exit(0)
+    exit(1)
