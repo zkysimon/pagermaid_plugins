@@ -69,6 +69,16 @@
             "supported": true,
             "des-short": "使用 bing 查询",
             "des": "使用 bing 查询"
+        },
+        {
+            "name": "icp",
+            "version": "1.0",
+            "section": "chat",
+            "maintainer": "zimk",
+            "size": "1.2 kb",
+            "supported": true,
+            "des-short": "查询icp备案消息",
+            "des": ",icp 查询icp备案消息"
         }
     ]
 }
