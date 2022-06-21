@@ -19,6 +19,8 @@ async def obtain_message(context) -> str:
 )
 async def icp(context: Message):
     domain = await obtain_message(context)
+    if not domain:
+        return await context.edit("请输入/回复域名")
     await context.edit("正在获取中 . . .")
     try:
         req = await client.get(f"https://api.kukuqaq.com/icp?keyword={domain}")
