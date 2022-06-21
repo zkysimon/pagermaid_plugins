@@ -2,7 +2,7 @@
     "list": [
         {
             "name": "kfc",
-            "version": "1.0",
+            "version": "1.01",
             "section": "daily",
             "maintainer": "xtaodada",
             "size": "17.08 kb",
@@ -12,7 +12,7 @@
         },
         {
             "name": "mtts",
-            "version": "1.01",
+            "version": "1.02",
             "section": "daily",
             "maintainer": "zimk",
             "size": "3.74 kb",
@@ -32,7 +32,7 @@
         },
         {
             "name": "ip",
-            "version": "1.0",
+            "version": "1.01",
             "section": "chat",
             "maintainer": "zimk",
             "size": "1.8 kb",
@@ -42,7 +42,7 @@
         },
         {
             "name": "dc",
-            "version": "1.01",
+            "version": "1.02",
             "section": "chat",
             "maintainer": "zimk",
             "size": "1.61 kb",
@@ -52,7 +52,7 @@
         },
         {
             "name": "bing",
-            "version": "1.0",
+            "version": "1.01",
             "section": "chat",
             "maintainer": "zimk",
             "size": "1.4 kb",
