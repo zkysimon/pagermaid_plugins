@@ -72,10 +72,10 @@
         },
         {
             "name": "icp",
-            "version": "1.0",
+            "version": "1.01",
             "section": "chat",
             "maintainer": "zimk",
-            "size": "1.2 kb",
+            "size": "1.49 kb",
             "supported": true,
             "des-short": "查询icp备案消息",
             "des": ",icp 查询icp备案消息"
