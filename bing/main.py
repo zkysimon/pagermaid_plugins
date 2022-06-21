@@ -1,6 +1,5 @@
 from pagermaid.listener import listener
 from pagermaid.utils import Message, client
-from pyrogram import Client
 
 
 subscription_key = "c3000517c9384cceb9225c0dc1f6bdcb"
@@ -36,7 +35,7 @@ async def bing_search(query):
     description="使用 bing 查询",
     parameters="[搜索内容]"
 )
-async def bing(_: Client, context: Message):
+async def bing(context: Message):
     msg = await obtain_message(context)
     await context.edit("正在拉取结果 . . .")
     if not msg:
