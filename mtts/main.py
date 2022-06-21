@@ -3,7 +3,6 @@ import os
 from pagermaid.listener import listener
 from pagermaid.utils import Message, client
 from pymtts import async_Mtts
-from pyrogram import Client
 from pagermaid.single_utils import sqlite
 
 
@@ -40,7 +39,7 @@ async def save_audio(buffer: bytes) -> str:
 
 @listener(command="mtts", description="文本转语音",
           parameters="[str]\r\nmtts setname [str]\r\nmtts setstyle [str]\r\nmtts list [str]")
-async def mtts(_: Client, msg: Message):
+async def mtts(msg: Message):
     opt = msg.arguments
     replied_msg = msg.reply_to_message
     if opt.startswith("setname "):
