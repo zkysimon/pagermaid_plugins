@@ -1,4 +1,3 @@
-from pyrogram import Client
 from pagermaid.listener import listener
 from pagermaid.utils import Message, client, execute
 
@@ -30,7 +29,7 @@ async def get_api(api: str) -> str:
     description="查询ip信息",
     parameters="[ip]/me"
 )
-async def ip(_: Client, msg: Message):
+async def ip(msg: Message):
     address = await obtain_message(msg)
     if not address:
         return await msg.edit("请输入要查询的ip")
@@ -48,7 +47,7 @@ async def ip(_: Client, msg: Message):
     description="besttrace 路由回程追踪",
     parameters="[ip]"
 )
-async def route(_: Client, msg: Message):
+async def route(msg: Message):
     ip = await obtain_message(msg)
     await msg.edit("正在路由追踪中，请稍候。")
     result = await execute(f"mkdir -p shell && cd shell && wget -q https://raw.githubusercontent.com/fscarmen/tools/main/return_pure.sh -O return.sh && bash return.sh {ip}")
