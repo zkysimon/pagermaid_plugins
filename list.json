@@ -22,11 +22,11 @@
         },
         {
             "name": "mtts",
-            "version": "1.02",
-            "section": "daily",
+            "version": "1.03",
+            "section": "chat",
             "maintainer": "zimk",
             "size": "3.74 kb",
-            "supported": false,
+            "supported": true,
             "des-short": "微软文本转语音",
             "des": ",mtts 微软文本转语音"
         },
