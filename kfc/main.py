@@ -1,5 +1,4 @@
 import random
-from pyrogram import Client
 from pagermaid.listener import listener
 from pagermaid.utils import Message
 
@@ -52,5 +51,5 @@ data = [
 
 
 @listener(command="kfc", description="天天疯狂！随机输出KFC疯狂星期四文案。")
-async def kfc(_: Client, context: Message):
+async def kfc(context: Message):
     await context.edit(random.choice(data))
