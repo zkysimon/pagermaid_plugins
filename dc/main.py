@@ -1,4 +1,3 @@
-from pyrogram import Client
 from pagermaid.listener import listener
 from pagermaid.utils import Message, execute
 
@@ -9,15 +8,15 @@ from pagermaid.utils import Message, execute
     command="dc",
     description="用户或机器人分配的 DC"
 )
-async def dc(_: Client, msg: Message):
+async def dc(msg: Message):
     reply = msg.reply_to_message
     if msg.arguments:
         return await msg.edit("您好像输入了一个无效的参数。")
     try:
         if reply:
-            user = await _.get_users(reply.from_user.id)
+            user = reply.from_user
         else:
-            user = await _.get_me()
+            user = msg.from_user
     except:
         msg.edit("请回复一名用户或者机器人使用。")
     if user.dc_id:
@@ -32,7 +31,7 @@ async def dc(_: Client, msg: Message):
     command="pingdc",
     description="查询到各个DC区的延时"
 )
-async def pingdc(_: Client, msg: Message):
+async def pingdc(msg: Message):
     DCs = {
         1: "149.154.175.50",
         2: "149.154.167.51",
