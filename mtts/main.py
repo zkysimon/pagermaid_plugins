@@ -69,12 +69,15 @@ async def mtts(msg: Message):
         await msg.edit(s)
     elif opt and opt != " ":
         config = await config_check()
-        mp3_buffer = await cmtts.mtts(text=opt,
-                                      short_name=config["short_name"],
-                                      style=config["style"],
-                                      rate=config["rate"],
-                                      pitch=config["pitch"],
-                                      kmhz=config["kmhz"])
+        try:
+            mp3_buffer = await cmtts.mtts(text=opt,
+                                          short_name=config["short_name"],
+                                          style=config["style"],
+                                          rate=config["rate"],
+                                          pitch=config["pitch"],
+                                          kmhz=config["kmhz"])
+        except:
+            await msg.edit("无法访问微软api，请稍后重试。")
         mp3_path = await save_audio(mp3_buffer)
 
         if replied_msg is None:
@@ -86,12 +89,15 @@ async def mtts(msg: Message):
             await msg.delete()
     elif replied_msg:
         config = await config_check()
-        mp3_buffer = await cmtts.mtts(text=replied_msg.text,
-                                      short_name=config["short_name"],
-                                      style=config["style"],
-                                      rate=config["rate"],
-                                      pitch=config["pitch"],
-                                      kmhz=config["kmhz"])
+        try:
+            mp3_buffer = await cmtts.mtts(text=replied_msg.text,
+                                          short_name=config["short_name"],
+                                          style=config["style"],
+                                          rate=config["rate"],
+                                          pitch=config["pitch"],
+                                          kmhz=config["kmhz"])
+        except:
+            await msg.edit("无法访问微软api，请稍后重试。")
         mp3_path = await save_audio(mp3_buffer)
         await msg.reply_voice(mp3_path,
                               reply_to_message_id=replied_msg.id)
