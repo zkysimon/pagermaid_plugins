@@ -1,4 +1,3 @@
-import json
 import os
 from pagermaid.listener import listener
 from pagermaid.utils import Message, client
@@ -56,6 +55,20 @@ async def mtts(msg: Message):
             await msg.edit("❗️ tts setting  error")
         await msg.edit(
             "successfully set up mtts voice style to:{}".format(model_name))
+    elif opt.startswith("setrate "):
+        model_name = opt.split(" ")[1]
+        status = await config_set(model_name, "rate")
+        if not status:
+            await msg.edit("❗️ tts setting  error")
+        await msg.edit(
+            "successfully set up mtts voice rate to:{}".format(model_name))
+    elif opt.startswith("setpitch "):
+        model_name = opt.split(" ")[1]
+        status = await config_set(model_name, "pitch")
+        if not status:
+            await msg.edit("❗️ tts setting  error")
+        await msg.edit(
+            "successfully set up mtts voice pitch to:{}".format(model_name))
     elif opt.startswith("list "):
         tag = opt.split(" ")[1]
         voice_model = await cmtts.get_lang_models()
