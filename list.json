@@ -22,10 +22,10 @@
         },
         {
             "name": "mtts",
-            "version": "1.04",
+            "version": "1.05",
             "section": "chat",
             "maintainer": "zimk",
-            "size": "3.91 kb",
+            "size": "4.51 kb",
             "supported": true,
             "des-short": "微软文本转语音",
             "des": ",mtts 微软文本转语音"
