@@ -37,7 +37,7 @@ async def save_audio(buffer: bytes) -> str:
 
 
 @listener(command="mtts", description="文本转语音",
-          parameters="[str]\r\nmtts setname [str]\r\nmtts setstyle [str]\r\nmtts list [str]")
+          parameters="[str]\r\nmtts setname [str]\r\nmtts setstyle [str]\r\nmtts setrate [int]\r\nmtts setpitch [int]\r\nmtts list [str]")
 async def mtts(msg: Message):
     opt = msg.arguments
     replied_msg = msg.reply_to_message
@@ -110,7 +110,7 @@ async def mtts(msg: Message):
                                           pitch=config["pitch"],
                                           kmhz=config["kmhz"])
         except:
-            await msg.edit("无法访问微软api，请稍后重试。")
+            return await msg.edit("无法访问微软api，请稍后重试。")
         mp3_path = await save_audio(mp3_buffer)
         await msg.reply_voice(mp3_path,
                               reply_to_message_id=replied_msg.id)
