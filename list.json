@@ -79,6 +79,16 @@
             "supported": true,
             "des-short": "查询icp备案消息",
             "des": ",icp 查询icp备案消息"
+        },
+        {
+            "name": "pmcaptcha",
+            "version": "1.00",
+            "section": "chat",
+            "maintainer": "zimk",
+            "size": "53.3 kb",
+            "supported": true,
+            "des-short": "私聊验证",
+            "des": ",pmcaptcha h"
         }
     ]
 }
