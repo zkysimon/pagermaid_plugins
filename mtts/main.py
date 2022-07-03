@@ -5,8 +5,6 @@ from pymtts import async_Mtts
 from pagermaid.single_utils import sqlite
 
 
-cmtts = async_Mtts()
-
 default_config = {
     "short_name": "zh-CN-XiaoxiaoNeural",
     "style": "general",
@@ -39,6 +37,7 @@ async def save_audio(buffer: bytes) -> str:
 @listener(command="mtts", description="文本转语音",
           parameters="[str]\r\nmtts setname [str]\r\nmtts setstyle [str]\r\nmtts setrate [int]\r\nmtts setpitch [int]\r\nmtts list [str]")
 async def mtts(msg: Message):
+    cmtts = async_Mtts()
     opt = msg.arguments
     replied_msg = msg.reply_to_message
     if opt.startswith("setname "):
@@ -71,7 +70,10 @@ async def mtts(msg: Message):
             "successfully set up mtts voice pitch to:{}".format(model_name))
     elif opt.startswith("list "):
         tag = opt.split(" ")[1]
-        voice_model = await cmtts.get_lang_models()
+        try:
+            voice_model = await cmtts.get_lang_models()
+        except:
+            return await msg.edit("无法访问微软api，请稍后重试。")
         s = "code | local name | Gender | LocaleName\r\n"
         for model in voice_model:
             if tag in model.ShortName or tag in model.Locale or tag in model.LocaleName:
