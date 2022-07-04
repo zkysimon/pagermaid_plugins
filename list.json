@@ -71,14 +71,14 @@
             "des": ",icp 查询icp备案消息"
         },
         {
-            "name": "pmcaptcha",
+            "name": "lunar",
             "version": "1.00",
-            "section": "chat",
+            "section": "daily",
             "maintainer": "zimk",
-            "size": "53.3 kb",
+            "size": "449 b",
             "supported": true,
-            "des-short": "私聊验证",
-            "des": ",pmcaptcha h"
+            "des-short": "查询今日黄历",
+            "des": "查询今日黄历"
         }
     ]
 }
