@@ -31,16 +31,6 @@
             "des": ",mtts 微软文本转语音"
         },
         {
-            "name": "prefixes",
-            "version": "1.02",
-            "section": "chat",
-            "maintainer": "zimk",
-            "size": "675 b",
-            "supported": true,
-            "des-short": "更改命令前缀",
-            "des": ",prefixes [旧符号] [新符号]"
-        },
-        {
             "name": "ip",
             "version": "1.01",
             "section": "chat",
