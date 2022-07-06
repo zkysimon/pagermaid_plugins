@@ -69,6 +69,16 @@
             "supported": true,
             "des-short": "查询今日黄历",
             "des": "查询今日黄历"
+        },
+        {
+            "name": "prefixes",
+            "version": "2.00",
+            "section": "chat",
+            "maintainer": "zimk",
+            "size": "976 b",
+            "supported": true,
+            "des-short": "更改命令前缀",
+            "des": ",prefixes [新符号1|新符号2|...] / reset"
         }
     ]
 }
