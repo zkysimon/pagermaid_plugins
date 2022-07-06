@@ -15,7 +15,7 @@ async def prefixes(msg: Message):
     prefixes = msg.arguments
     reset = ",|，"
     if prefixes == "reset":
-        prefixes == reset
+        prefixes = reset
     if not sqlite.get("prefixes", {}) or sqlite["prefixes"]["prefixes"] == reset:
         old_prefixes = reset
     else:
