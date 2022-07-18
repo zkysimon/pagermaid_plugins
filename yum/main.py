@@ -34,7 +34,7 @@ def move_plugin(file_path):
 
 
 async def download(name):
-    html = await client.get(f'https://git.zimk.eu.org/zimk/pagermaid_plugins/-/raw/main/{name}/main.py')
+    html = await client.get(f'https://git.llc/zimk/pagermaid_plugins/-/raw/main/{name}/main.py')
     with open(f'plugins{sep}{name}.py', mode='wb') as f:
         f.write(html.text.encode('utf-8'))
     return f'plugins{sep}{name}.py'
@@ -87,7 +87,7 @@ async def plugin(message: Message):
             success_list = []
             failed_list = []
             no_need_list = []
-            plugin_list = await client.get(f"https://git.zimk.eu.org/zimk/pagermaid_plugins/-/raw/main/list.json")
+            plugin_list = await client.get(f"https://git.llc/zimk/pagermaid_plugins/-/raw/main/list.json")
             plugin_list = plugin_list.json()["list"]
             for i in process_list:
                 if exists(f"{plugin_directory}yumversion.json"):
@@ -246,7 +246,7 @@ async def plugin(message: Message):
             return
         with open(f"{plugin_directory}yumversion.json", 'r', encoding="utf-8") as f:
             version_json = json.load(f)
-        plugin_list = await client.get(f"https://git.zimk.eu.org/zimk/pagermaid_plugins/-/raw/main/list.json")
+        plugin_list = await client.get(f"https://git.llc/zimk/pagermaid_plugins/-/raw/main/list.json")
         plugin_online = plugin_list.json()["list"]
         for key, value in version_json.items():
             if value == "0.0":
@@ -290,7 +290,7 @@ async def plugin(message: Message):
         elif len(message.parameter) == 2:
             search_result = []
             plugin_name = message.parameter[1]
-            plugin_list = await client.get(f"https://git.zimk.eu.org/zimk/pagermaid_plugins/-/raw/main/list.json")
+            plugin_list = await client.get(f"https://git.llc/zimk/pagermaid_plugins/-/raw/main/list.json")
             plugin_online = plugin_list.json()["list"]
             for i in plugin_online:
                 if search(plugin_name, i["name"], I):
@@ -307,7 +307,7 @@ async def plugin(message: Message):
         elif len(message.parameter) == 2:
             search_result = ""
             plugin_name = message.parameter[1]
-            plugin_list = await client.get(f"https://git.zimk.eu.org/zimk/pagermaid_plugins/-/raw/main/list.json")
+            plugin_list = await client.get(f"https://git.llc/zimk/pagermaid_plugins/-/raw/main/list.json")
             plugin_online = plugin_list.json()["list"]
             for i in plugin_online:
                 if plugin_name == i["name"]:
@@ -336,7 +336,7 @@ async def plugin(message: Message):
         list_plugin = []
         with open(f"{plugin_directory}yumversion.json", 'r', encoding="utf-8") as f:
             version_json = json.load(f)
-        plugin_list = await client.get(f"https://git.zimk.eu.org/zimk/pagermaid_plugins/-/raw/main/list.json")
+        plugin_list = await client.get(f"https://git.llc/zimk/pagermaid_plugins/-/raw/main/list.json")
         plugin_online = plugin_list.json()["list"]
         for key, value in version_json.items():
             if value == "0.0":
