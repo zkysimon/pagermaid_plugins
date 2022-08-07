@@ -20,15 +20,14 @@ async def obtain_message(context) -> str:
 )
 async def oracle(message: Message):
     msg = await obtain_message(message)
-    sqlite["oracle"] = {"tenant": []}
     if msg.startswith("add "):
         if not sqlite.get('oracle', {}):
-            sqlite["oracle"] = {"tenant": []}
+            sqlite["test"] = {"tenant": []}
         tenant = msg.lstrip("add ").split(" ")
         if not tenant:
             message.edit("请填入租户名")
         for i in tenant:
-            sqlite["oracle"]["tenant"].append(i)
+            sqlite["test"]["tenant"].append(i)
         message.edit("添加成功")
     elif msg.startswith("del "):
         if not sqlite.get('oracle', {}):
@@ -37,14 +36,14 @@ async def oracle(message: Message):
         if not tenant:
             message.edit("请填入租户名")
         for i in tenant:
-            sqlite["oracle"]["tenant"].remove(i)
+            sqlite["test"]["tenant"].remove(i)
         message.edit("删除成功")
     elif msg.startswith("delall"):
-        sqlite["oracle"]["tenant"] = []
+        sqlite["test"]["tenant"] = []
         return
     elif not msg:
         t = f = 0
-        tenant = sqlite["oracle"]["tenant"]
+        tenant = sqlite["test"]["tenant"]
         for i in tenant:
             if await check(i):
                 t += 1
