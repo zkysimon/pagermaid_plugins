@@ -41,12 +41,17 @@ async def oracle(message: Message):
     elif msg.startswith("delall"):
         sqlite["oracle"] = []
         return
+    elif not msg:
+        tenant = msg.split(" ")
+        if tenant[1]:
+            await message.edit("请输入单个租户名")
+        if await check(tenant[0]):
+            await message.edit("该账号存活")
     else:
         t = f = 0
-        tenant = msg.split(" ")
+        tenant = sqlite["oracle"]
         for i in tenant:
-            result = await check(i)
-            if result:
+            if await check(i):
                 t += 1
             else:
                 f += 1
