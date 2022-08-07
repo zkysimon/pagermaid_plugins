@@ -20,6 +20,7 @@ async def obtain_message(context) -> str:
 )
 async def oracle(message: Message):
     msg = await obtain_message(message)
+    sqlite["oracle"] = {"tenant": []}
     if msg.startswith("add "):
         if not sqlite.get('oracle', {}):
             sqlite["oracle"] = {"tenant": []}
