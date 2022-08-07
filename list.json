@@ -2,7 +2,7 @@
     "list": [
         {
             "name": "yum",
-            "version": "1.02",
+            "version": "1.03",
             "section": "daily",
             "maintainer": "xtaodada",
             "size": "30 kb",
@@ -79,6 +79,16 @@
             "supported": true,
             "des-short": "更改命令前缀",
             "des": ",prefixes [新符号1|新符号2|...] / reset"
+        },
+        {
+            "name": "oracle",
+            "version": "1.00",
+            "section": "chat",
+            "maintainer": "zimk",
+            "size": "1.97 kb",
+            "supported": true,
+            "des-short": "查询oracle账号存活情况",
+            "des": ",oracle [tenant]/[add tenant]/[del tenant]/[delall]"
         }
     ]
 }
