@@ -21,7 +21,7 @@ async def obtain_message(context) -> str:
 async def oracle(message: Message):
     msg = await obtain_message(message)
     if msg.startswith("add "):
-        if not sqlite["oracle"]:
+        if not sqlite.get('oracle', []):
             sqlite["oracle"] = []
         tenant = msg.lstrip("add ").split(" ")
         if not tenant:
@@ -30,7 +30,7 @@ async def oracle(message: Message):
             sqlite["oracle"].append(i)
         message.edit("添加成功")
     elif msg.startswith("del "):
-        if not sqlite["oracle"]:
+        if not sqlite.get('oracle', []):
             return message.edit("请先添加邮箱")
         tenant = msg.lstrip("del ").split(" ")
         if not tenant:
@@ -42,8 +42,8 @@ async def oracle(message: Message):
         sqlite["oracle"] = []
         return
     else:
-        tenant = msg.split(" ")
         t = f = 0
+        tenant = msg.split(" ")
         for i in tenant:
             result = await check(i)
             if result:
@@ -55,7 +55,7 @@ async def oracle(message: Message):
 
 async def check(tenant):
     url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
-    region = await client.get(url).json()["tenantHomeRegionUrl"]
+    region = await client.get(url).json().get("tenantHomeRegionUrl")
     if not region:
         region = "https://login.ap-tokyo-1.oraclecloud.com/"
     checkurl = f"{region}v2/domains?tenant={tenant}"
