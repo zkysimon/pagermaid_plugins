@@ -42,12 +42,6 @@ async def oracle(message: Message):
         sqlite["oracle"] = []
         return
     elif not msg:
-        tenant = msg.split(" ")
-        if tenant[1]:
-            await message.edit("请输入单个租户名")
-        if await check(tenant[0]):
-            await message.edit("该账号存活")
-    else:
         t = f = 0
         tenant = sqlite["oracle"]
         for i in tenant:
@@ -56,6 +50,12 @@ async def oracle(message: Message):
             else:
                 f += 1
         await message.edit(f"你的甲骨文还有{t}个账号活着，{f}个账号已死")
+    else:
+        tenant = msg.split(" ")
+        if tenant[1]:
+            await message.edit("请输入单个租户名")
+        if await check(tenant[0]):
+            await message.edit("该账号存活")
 
 
 async def check(tenant):
