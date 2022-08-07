@@ -21,29 +21,29 @@ async def obtain_message(context) -> str:
 async def oracle(message: Message):
     msg = await obtain_message(message)
     if msg.startswith("add "):
-        if not sqlite.get('oracle', []):
-            sqlite["oracle"] = []
+        if not sqlite.get('oracle', {}):
+            sqlite["oracle"] = {"tenant": []}
         tenant = msg.lstrip("add ").split(" ")
         if not tenant:
             message.edit("请填入租户名")
         for i in tenant:
-            sqlite["oracle"].append(i)
+            sqlite["oracle"]["tenant"].append(i)
         message.edit("添加成功")
     elif msg.startswith("del "):
-        if not sqlite.get('oracle', []):
-            return message.edit("请先添加邮箱")
+        if not sqlite.get('oracle', {}):
+            return await message.edit("请先添加邮箱")
         tenant = msg.lstrip("del ").split(" ")
         if not tenant:
             message.edit("请填入租户名")
         for i in tenant:
-            sqlite["oracle"].remove(i)
+            sqlite["oracle"]["tenant"].remove(i)
         message.edit("删除成功")
     elif msg.startswith("delall"):
-        sqlite["oracle"] = []
+        sqlite["oracle"]["tenant"] = []
         return
     elif not msg:
         t = f = 0
-        tenant = sqlite["oracle"]
+        tenant = sqlite["oracle"]["tenant"]
         for i in tenant:
             if await check(i):
                 t += 1
@@ -51,10 +51,9 @@ async def oracle(message: Message):
                 f += 1
         await message.edit(f"你的甲骨文还有{t}个账号活着，{f}个账号已死")
     else:
-        tenant = msg.split(" ")
-        if tenant[1]:
+        if " " in msg:
             await message.edit("请输入单个租户名")
-        if await check(tenant[0]):
+        if await check(msg):
             await message.edit("该账号存活")
 
 
