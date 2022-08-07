@@ -55,8 +55,8 @@ async def oracle(message: Message):
 
 async def check(tenant):
     url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
-    region = await client.get(url).json().get("tenantHomeRegionUrl")
+    region = (await client.get(url)).json().get("tenantHomeRegionUrl")
     if not region:
         region = "https://login.ap-tokyo-1.oraclecloud.com/"
     checkurl = f"{region}v2/domains?tenant={tenant}"
-    return await client.get(checkurl).json()
+    return (await client.get(checkurl)).json()
