@@ -2,7 +2,7 @@
     "list": [
         {
             "name": "yum",
-            "version": "1.03",
+            "version": "1.04",
             "section": "daily",
             "maintainer": "xtaodada",
             "size": "30 kb",
