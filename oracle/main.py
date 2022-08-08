@@ -74,7 +74,7 @@ async def oracle(message: Message):
     else:
         if " " in msg:
             return await message.edit("请输入单个租户名")
-            result = await check(msg)
+        result = await check(msg)
         if result:
             return await message.edit("该账号存活")
 
