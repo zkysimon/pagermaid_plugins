@@ -1,6 +1,6 @@
 from pagermaid.listener import listener
-from pagermaid.utils import Message, client
 from pagermaid.single_utils import sqlite
+from pagermaid.utils import Message, client
 
 
 async def obtain_message(context) -> str:
@@ -74,9 +74,9 @@ async def oracle(message: Message):
     else:
         if " " in msg:
             return await message.edit("请输入单个租户名")
-        result = await check(msg)
-        if result:
+        if await check(msg):
             return await message.edit("该账号存活")
+        return await message.edit("该账号已死")
 
 
 async def check(tenant):
