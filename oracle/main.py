@@ -11,6 +11,22 @@ async def obtain_message(context) -> str:
     return message
 
 
+async def config_check() -> dict:
+    if not sqlite.get("oracle", {}):
+        sqlite["oracle"] = {"tenant": []}
+    return sqlite["oracle"]
+
+
+async def config_set(tenant, check) -> bool:
+    config = await config_check()
+    if check == a:
+        for i in tenant:
+            if i not in config["tenant"]:
+                config["tenant"].append(i)
+    sqlite["oracle"] = config
+    return True
+
+
 @listener(
     is_plugin=True,
     outgoing=True,
@@ -21,29 +37,43 @@ async def obtain_message(context) -> str:
 async def oracle(message: Message):
     msg = await obtain_message(message)
     if msg.startswith("add "):
-        if not sqlite.get('oracle', {}):
-            sqlite["test"] = {"tenant": []}
         tenant = msg.lstrip("add ").split(" ")
         if not tenant:
-            message.edit("请填入租户名")
+            return await message.edit("请填入租户名")
+        config = await config_check()
+        count = 0
         for i in tenant:
-            sqlite["test"]["tenant"].append(i)
-        message.edit("添加成功")
+            if i not in config["tenant"]:
+                config["tenant"].append(i)
+                count += 1
+        if count < 1:
+            return await message.edit("添加失败")
+        sqlite["oracle"] = config
+        return await message.edit(f"{count}个租户名添加成功")
     elif msg.startswith("del "):
-        if not sqlite.get('oracle', {}):
-            return await message.edit("请先添加邮箱")
+        if not sqlite.get("oracle", {}):
+            return await message.edit("请先添加租户名")
         tenant = msg.lstrip("del ").split(" ")
         if not tenant:
-            message.edit("请填入租户名")
+            return await message.edit("请填入租户名")
+        config = await config_check()
+        count = 0
         for i in tenant:
-            sqlite["test"]["tenant"].remove(i)
-        message.edit("删除成功")
+            config["tenant"].remove(i)
+            count += 1
+        if count < 1:
+            return await message.edit("添加失败")
+        sqlite["oracle"] = config
+        return await message.edit(f"{count}个租户名删除成功")
     elif msg.startswith("delall"):
-        sqlite["test"]["tenant"] = []
-        return
+        config = await config_check()
+        config["tenant"] = []
+        sqlite["oracle"] = config
+        return await message.edit("所有租户名已删除")
     elif not msg:
         t = f = 0
-        tenant = sqlite["test"]["tenant"]
+        config = await config_check()
+        tenant = config["tenant"]
         for i in tenant:
             if await check(i):
                 t += 1
@@ -52,9 +82,9 @@ async def oracle(message: Message):
         await message.edit(f"你的甲骨文还有{t}个账号活着，{f}个账号已死")
     else:
         if " " in msg:
-            await message.edit("请输入单个租户名")
+            return await message.edit("请输入单个租户名")
         if await check(msg):
-            await message.edit("该账号存活")
+            return await message.edit("该账号存活")
 
 
 async def check(tenant):
