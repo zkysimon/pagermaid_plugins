@@ -17,16 +17,6 @@ async def config_check() -> dict:
     return sqlite["oracle"]
 
 
-async def config_set(tenant, check) -> bool:
-    config = await config_check()
-    if check == a:
-        for i in tenant:
-            if i not in config["tenant"]:
-                config["tenant"].append(i)
-    sqlite["oracle"] = config
-    return True
-
-
 @listener(
     is_plugin=True,
     outgoing=True,
@@ -36,6 +26,7 @@ async def config_set(tenant, check) -> bool:
 )
 async def oracle(message: Message):
     msg = await obtain_message(message)
+    await message.edit("请稍后。。。")
     if msg.startswith("add "):
         tenant = msg.lstrip("add ").split(" ")
         if not tenant:
