@@ -1,3 +1,4 @@
+import asyncio
 from pagermaid.listener import listener
 from pagermaid.single_utils import sqlite
 from pagermaid.utils import Message, client
@@ -65,23 +66,28 @@ async def oracle(message: Message):
         t = f = 0
         config = await config_check()
         tenant = config["tenant"]
+        task_list = []
         for i in tenant:
-            if await check(i):
+            url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{i}"
+            result = check((await client.get(url)).json().get("tenantHomeRegionUrl"), i)
+            if result:
                 t += 1
             else:
                 f += 1
+            task = asyncio.create_task(result)
+            task_list.append(task)
+        await asyncio.gather(*task_list)
         await message.edit(f"你的甲骨文还有{t}个账号活着，{f}个账号已死")
     else:
         if " " in msg:
             return await message.edit("请输入单个租户名")
-        if await check(msg):
+        url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{msg}"
+        if await check((await client.get(url)).json().get("tenantHomeRegionUrl"), msg):
             return await message.edit("该账号存活")
         return await message.edit("该账号已死")
 
 
-async def check(tenant):
-    url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
-    region = (await client.get(url)).json().get("tenantHomeRegionUrl")
+async def check(region, tenant):
     if not region:
         region = "https://login.ap-tokyo-1.oraclecloud.com/"
     checkurl = f"{region}v2/domains?tenant={tenant}"
