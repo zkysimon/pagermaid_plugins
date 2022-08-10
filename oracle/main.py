@@ -63,6 +63,12 @@ async def oracle(message: Message):
         config["tenant"] = []
         sqlite["oracle"] = config
         return await message.edit("所有租户名已删除")
+    elif msg == "list":
+        config = await config_check()
+        result = "当前已添加租户名有："
+        for i in config["tenant"]:
+            result += f"{i} "
+        await message.edit(result)
     elif not msg:
         config = await config_check()
         task_list = []
