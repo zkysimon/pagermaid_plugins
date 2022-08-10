@@ -26,6 +26,7 @@ async def config_check() -> dict:
     parameters="[tenant]/[add tenant]/[del tenant]/[delall]"
 )
 async def oracle(message: Message):
+    global t, f
     msg = await obtain_message(message)
     await message.edit("请稍后。。。")
     if msg.startswith("add "):
@@ -63,17 +64,10 @@ async def oracle(message: Message):
         sqlite["oracle"] = config
         return await message.edit("所有租户名已删除")
     elif not msg:
-        t = f = 0
         config = await config_check()
-        tenant = config["tenant"]
         task_list = []
-        for i in tenant:
-            url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{i}"
-            result = check((await client.get(url)).json().get("tenantHomeRegionUrl"), i)
-            if result:
-                t += 1
-            else:
-                f += 1
+        for i in config["tenant"]:
+            result = check(i)
             task = asyncio.create_task(result)
             task_list.append(task)
         await asyncio.gather(*task_list)
@@ -81,14 +75,23 @@ async def oracle(message: Message):
     else:
         if " " in msg:
             return await message.edit("请输入单个租户名")
-        url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{msg}"
-        if await check((await client.get(url)).json().get("tenantHomeRegionUrl"), msg):
+        t, f = await check(msg)
+        if t:
             return await message.edit("该账号存活")
         return await message.edit("该账号已死")
 
 
-async def check(region, tenant):
+async def check(tenant):
+    global t, f
+    t = f = 0
+    url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
+    region = (await client.get(url)).json().get("tenantHomeRegionUrl")
     if not region:
         region = "https://login.ap-tokyo-1.oraclecloud.com/"
     checkurl = f"{region}v2/domains?tenant={tenant}"
-    return (await client.get(checkurl)).json()
+    result = (await client.get(checkurl)).json()
+    if result:
+        t += 1
+    else:
+        f += 1
+    return t, f
