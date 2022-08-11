@@ -69,6 +69,8 @@ async def oracle(message: Message):
         for i in config["tenant"]:
             result += f"{i} "
         await message.edit(result)
+        await asyncio.sleep(10)
+        await message.delete()
     elif not msg:
         config = await config_check()
         task_list = []
@@ -78,6 +80,8 @@ async def oracle(message: Message):
             task_list.append(task)
         await asyncio.gather(*task_list)
         await message.edit(f"你的甲骨文还有{t}个账号活着，{f}个账号已死")
+        await asyncio.sleep(10)
+        await message.delete()
     else:
         if " " in msg:
             return await message.edit("请输入单个租户名")
