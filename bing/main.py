@@ -1,8 +1,9 @@
+import uuid
 from pagermaid.listener import listener
 from pagermaid.utils import Message, client
 
 
-subscription_key = "c3000517c9384cceb9225c0dc1f6bdcb"
+subscription_key = str(uuid.uuid4()).replace("-", "")
 search_url = "https://api.bing.microsoft.com/v7.0/search"
 
 
