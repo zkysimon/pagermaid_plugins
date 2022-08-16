@@ -21,7 +21,7 @@ async def ipcheck(message: Message):
     msg = await obtain_message(message)
     await message.edit("请稍后。。。")
     i = msg.split(":")
-    if not i[1]:
+    if len(i) != 2:
         i.append("443")
     result = await check_ip_port(i[0], i[1])
     in_icmp = "可用" if result["icmp"] == 'success' else "不可用"
