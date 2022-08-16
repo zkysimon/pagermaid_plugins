@@ -42,12 +42,12 @@ async def check_ip_port(ip: str, port: str):
         "x-requested-with": "XMLHttpRequest"
     }
     resp = await client.post(f"{url}/{ip}/{port}", headers=headers)
-    if resp.status == 200:
+    if resp.status_code == 200:
         inner_data = resp.json()
     else:
         resp.raise_for_status()
     resp2 = await client.post(f"{url}2/{ip}/{port}", headers=headers)
-    if resp2.status == 200:
+    if resp2.status_code == 200:
         outer_data = resp2.json()
         inner_data.update(outer_data)
     else:
