@@ -23,7 +23,10 @@ async def ipcheck(message: Message):
     i = msg.split(":")
     if len(i) != 2:
         i.append("443")
-    result = await check_ip_port(i[0], i[1])
+    try:
+        result = await check_ip_port(i[0], i[1])
+    except:
+        return await message.edit("访问api出错。。。请稍后重试。。。")
     in_icmp = "可用" if result["icmp"] == 'success' else "不可用"
     in_tcp = "可用" if result["tcp"] == 'success' else "不可用"
     out_icmp = "可用" if result["outside_icmp"] == 'success' else "不可用"
