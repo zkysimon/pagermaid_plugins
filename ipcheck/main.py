@@ -1,4 +1,4 @@
-immport requests
+import requests
 from pagermaid.listener import listener
 from pagermaid.utils import Message
 
