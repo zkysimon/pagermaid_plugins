@@ -28,9 +28,9 @@ async def ipcheck(message: Message):
     in_tcp = "可用" if result["tcp"] == 'success' else "不可用"
     out_icmp = "可用" if result["outside_icmp"] == 'success' else "不可用"
     out_tcp = "可用" if result["outside_icmp"] == 'success' else "不可用"
-    await message.edit(f"```IP：{i[0]}，port：{i[1]}"
+    await message.edit(f"```IP：{i[0]}，port：{i[1]}\n"
                        f"国内检测结果：ICMP{in_icmp}；TCP{in_tcp}\n"
-                       f"国外检测结果：ICMP：{out_icmp}；TCP{out_tcp}```")
+                       f"国外检测结果：ICMP{out_icmp}；TCP{out_tcp}```")
 
 
 async def check_ip_port(ip: str, port: str):
