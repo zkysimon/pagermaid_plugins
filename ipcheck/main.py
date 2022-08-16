@@ -22,7 +22,7 @@ async def ipcheck(message: Message):
     i = msg.split(":")
     if not i[1]:
         i.append("443")
-    result = check_ip_port(i[0], i[1])
+    result = await check_ip_port(i[0], i[1])
     in_icmp = "可用" if result["icmp"] == 'success' else "不可用"
     in_tcp = "可用" if result["tcp"] == 'success' else "不可用"
     out_icmp = "可用" if result["outside_icmp"] == 'success' else "不可用"
