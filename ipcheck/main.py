@@ -19,6 +19,7 @@ async def obtain_message(context) -> str:
 )
 async def ipcheck(message: Message):
     msg = await obtain_message(message)
+    await message.edit("请稍后。。。")
     i = msg.split(":")
     if not i[1]:
         i.append("443")
