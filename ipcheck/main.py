@@ -1,5 +1,6 @@
+immport requests
 from pagermaid.listener import listener
-from pagermaid.utils import Message, client
+from pagermaid.utils import Message
 
 
 async def obtain_message(context) -> str:
@@ -21,7 +22,7 @@ async def ipcheck(message: Message):
     msg = await obtain_message(message)
     await message.edit("请稍后。。。")
     i = msg.split(":")
-    if len(i) != 2:
+    if len(i) < 2:
         i.append("443")
     try:
         result = await check_ip_port(i[0], i[1])
@@ -44,15 +45,9 @@ async def check_ip_port(ip: str, port: str):
         "referer": "https://www.toolsdaquan.com/ipcheck/",
         "x-requested-with": "XMLHttpRequest"
     }
-    resp = await client.post(f"{url}/{ip}/{port}", headers=headers)
-    if resp.status_code == 200:
-        inner_data = resp.json()
-    else:
-        resp.raise_for_status()
-    resp2 = await client.post(f"{url}2/{ip}/{port}", headers=headers)
-    if resp2.status_code == 200:
-        outer_data = resp2.json()
-        inner_data.update(outer_data)
-    else:
-        resp2.raise_for_status()
+    resp = requests.post(f"{url}/{ip}/{port}", headers=headers)
+    inner_data = resp.json()
+    resp2 = requests.post(f"{url}2/{ip}/{port}", headers=headers)
+    outer_data = resp2.json()
+    inner_data.update(outer_data)
     return inner_data
