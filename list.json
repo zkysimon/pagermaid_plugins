@@ -89,6 +89,16 @@
             "supported": true,
             "des-short": "查询oracle账号存活情况",
             "des": ",oracle [tenant]/[add tenant]/[del tenant]/[delall]"
+        },
+        {
+            "name": "ipcheck",
+            "version": "1.0",
+            "section": "chat",
+            "maintainer": "zimk",
+            "size": "184 kb",
+            "supported": true,
+            "des-short": "ip被墙检测",
+            "des": ",ipcheck [ip:port]"
         }
     ]
 }
