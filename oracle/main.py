@@ -30,7 +30,7 @@ async def oracle(message: Message):
     msg = await obtain_message(message)
     await message.edit("请稍后。。。")
     if msg.startswith("add "):
-        tenant = msg.lstrip("add ").split(" ")
+        tenant = msg[4:].split(" ")
         if not tenant:
             return await message.edit("请填入租户名")
         config = await config_check()
@@ -46,7 +46,7 @@ async def oracle(message: Message):
     elif msg.startswith("del "):
         if not sqlite.get("oracle", {}):
             return await message.edit("请先添加租户名")
-        tenant = msg.lstrip("del ").split(" ")
+        tenant = msg[4:].split(" ")
         if not tenant:
             return await message.edit("请填入租户名")
         config = await config_check()
@@ -55,7 +55,7 @@ async def oracle(message: Message):
             config["tenant"].remove(i)
             count += 1
         if count < 1:
-            return await message.edit("添加失败")
+            return await message.edit("删除失败")
         sqlite["oracle"] = config
         return await message.edit(f"{count}个租户名删除成功")
     elif msg.startswith("delall"):
