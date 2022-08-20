@@ -126,7 +126,7 @@ class Sticker:
           need_admin=True)
 async def sticker(message: Message):
     pack = await config_check()
-    if message.parameter[0] == "set":
+    if message.arguments.startswith("set "):
         pack["pack"] = message.parameter[1]
         sqlite["stickers"] = pack
         return
