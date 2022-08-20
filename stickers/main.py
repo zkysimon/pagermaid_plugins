@@ -129,7 +129,7 @@ async def sticker(message: Message):
     if message.arguments.startswith("set "):
         pack["pack"] = message.parameter[1]
         sqlite["stickers"] = pack
-        return
+        return await message.edit(f"贴纸包已修改为 [这个](https://t.me/addstickers/{pack['pack']})")
     await unblock_sticker_bot()
     one_sticker = Sticker(message, should_forward=message.reply_to_message)
     try:
@@ -138,3 +138,4 @@ async def sticker(message: Message):
     except Exception as e:
         return await message.edit(f"收藏到贴纸包失败：{e}")
     await message.edit("收藏到贴纸包成功")
+    
