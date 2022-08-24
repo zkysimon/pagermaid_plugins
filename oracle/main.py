@@ -4,6 +4,44 @@ from pagermaid.single_utils import sqlite
 from pagermaid.utils import Message, client
 
 
+class Oracle:
+    alive: int
+    death: int
+    void: int
+
+    def __init__(self):
+        self.alive = self.death = self.void = 0
+
+    async def login(self, tenant):
+        url = f"https://myservices-{tenant}.console.oraclecloud.com/mycloud/cloudportal/gettingStarted"
+        try:
+            resp = await client.head(url)
+            if resp.status_code == 302:
+                self.alive += 1
+            else:
+                self.death += 1
+        except:
+            self.void += 1
+
+    async def api(self, tenant):
+        url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
+        resp = await client.get(url).json()
+        if not resp["identityProviders"] and not resp["flights"]["isHenosisEnabled"]:
+            self.void += 1
+        region = resp.json().get("tenantHomeRegionUrl")
+        if not region:
+            region = "https://login.ap-tokyo-1.oraclecloud.com/"
+        checkurl = f"{region}v2/domains?tenant={tenant}"
+        result = (await client.get(checkurl)).json()
+        if result:
+            self.alive += 1
+        else:
+            self.death += 1
+
+    async def clean(self):
+        self.alive = self.death = self.void = 0
+
+
 async def obtain_message(context) -> str:
     reply = context.reply_to_message
     message = context.arguments
@@ -13,9 +51,19 @@ async def obtain_message(context) -> str:
 
 
 async def config_check() -> dict:
+    sqlite["oracle"] = {
+        "method": "api",
+        "tenant": []
+    }
     if not sqlite.get("oracle", {}):
-        sqlite["oracle"] = {"tenant": []}
+        sqlite["oracle"] = {
+            "method": "api",
+            "tenant": []
+        }
     return sqlite["oracle"]
+
+
+oracle = Oracle()
 
 
 @listener(
@@ -26,7 +74,6 @@ async def config_check() -> dict:
     parameters="[tenant]/[add tenant]/[del tenant]/[delall]"
 )
 async def oracle(message: Message):
-    global t, f
     msg = await obtain_message(message)
     await message.edit("请稍后。。。")
     if msg.startswith("add "):
@@ -75,33 +122,31 @@ async def oracle(message: Message):
         config = await config_check()
         task_list = []
         for i in config["tenant"]:
-            result = check(i)
-            task = asyncio.create_task(result)
+            if config["method"] == "api":
+                task = asyncio.create_task(oracle.api(i))
+            else:
+                task = asyncio.create_task(oracle.login(i))
             task_list.append(task)
         await asyncio.gather(*task_list)
-        await message.edit(f"你的甲骨文还有{t}个账号活着，{f}个账号已死")
+        text = f"通过{config['method']}方式检测：\n你的甲骨文：{oracle.alive}个账号活着，{oracle.death}个账号已死"
+        await message.edit(text)
+        await oracle.clean()
         await asyncio.sleep(10)
         await message.delete()
     else:
         if " " in msg:
             return await message.edit("请输入单个租户名")
-        t, f = await check(msg)
-        if t:
-            return await message.edit("该账号存活")
-        return await message.edit("该账号已死")
-
-
-async def check(tenant):
-    global t, f
-    t = f = 0
-    url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
-    region = (await client.get(url)).json().get("tenantHomeRegionUrl")
-    if not region:
-        region = "https://login.ap-tokyo-1.oraclecloud.com/"
-    checkurl = f"{region}v2/domains?tenant={tenant}"
-    result = (await client.get(checkurl)).json()
-    if result:
-        t += 1
-    else:
-        f += 1
-    return t, f
+        config = await config_check()
+        if config["method"] == "api":
+            await oracle.api(msg)
+        else:
+            await oracle.login(msg)
+        if oracle.alive:
+            await message.edit("该租户名存在")
+        elif oracle.void:
+            await message.edit("该租户名不存在")
+        elif oracle.death:
+            await message.edit("该租户名已死")
+        else:
+            await message.edit("API出错，请稍后重试")
+        await oracle.clean()
