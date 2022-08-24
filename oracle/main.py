@@ -51,10 +51,6 @@ async def obtain_message(context) -> str:
 
 
 async def config_check() -> dict:
-    sqlite["oracle"] = {
-        "method": "api",
-        "tenant": []
-    }
     if not sqlite.get("oracle", {}):
         sqlite["oracle"] = {
             "method": "api",
@@ -118,6 +114,13 @@ async def oracle(message: Message):
         await message.edit(result)
         await asyncio.sleep(10)
         await message.delete()
+    elif msg == "change":
+        config = await config_check()
+        if config["method"] == "api":
+            config["method"] = "login"
+        else:
+            config["method"] = "api"
+        sqlite["oracle"] = config
     elif not msg:
         config = await config_check()
         task_list = []

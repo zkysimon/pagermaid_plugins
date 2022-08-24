@@ -82,13 +82,13 @@
         },
         {
             "name": "oracle",
-            "version": "2.03",
+            "version": "2.04",
             "section": "chat",
             "maintainer": "zimk",
             "size": "1.97 kb",
             "supported": true,
             "des-short": "查询oracle账号存活情况",
-            "des": ",oracle [tenant]/[add tenant]/[del tenant]/[delall]"
+            "des": ",oracle [tenant]/add [tenant]/del [tenant]/delall/change"
         },
         {
             "name": "ipcheck",
