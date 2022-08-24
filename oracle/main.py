@@ -25,7 +25,7 @@ class Oracle:
 
     async def api(self, tenant):
         url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
-        resp = await client.get(url).json()
+        resp = (await client.get(url)).json()
         if not resp["identityProviders"] and not resp["flights"]["isHenosisEnabled"]:
             self.void += 1
         region = resp.json().get("tenantHomeRegionUrl")
