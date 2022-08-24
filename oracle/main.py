@@ -28,7 +28,7 @@ class Oracle:
         resp = (await client.get(url)).json()
         if not resp["identityProviders"] and not resp["flights"]["isHenosisEnabled"]:
             self.void += 1
-        region = resp.json().get("tenantHomeRegionUrl")
+        region = resp.get("tenantHomeRegionUrl")
         if not region:
             region = "https://login.ap-tokyo-1.oraclecloud.com/"
         checkurl = f"{region}v2/domains?tenant={tenant}"
