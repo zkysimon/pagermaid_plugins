@@ -59,7 +59,7 @@ async def config_check() -> dict:
     return sqlite["oracle"]
 
 
-oracle = Oracle()
+check = Oracle()
 
 
 @listener(
@@ -126,14 +126,15 @@ async def oracle(message: Message):
         task_list = []
         for i in config["tenant"]:
             if config["method"] == "api":
-                task = asyncio.create_task(oracle.api(i))
+                result = check.api(i)
             else:
-                task = asyncio.create_task(oracle.login(i))
+                result = check.login(i)
+            task = asyncio.create_task(result)
             task_list.append(task)
         await asyncio.gather(*task_list)
-        text = f"通过{config['method']}方式检测：\n你的甲骨文：{oracle.alive}个账号活着，{oracle.death}个账号已死"
+        text = f"通过{config['method']}方式检测：\n你的甲骨文：{check.alive}个账号活着，{check.death}个账号已死"
         await message.edit(text)
-        await oracle.clean()
+        await check.clean()
         await asyncio.sleep(10)
         await message.delete()
     else:
@@ -141,15 +142,15 @@ async def oracle(message: Message):
             return await message.edit("请输入单个租户名")
         config = await config_check()
         if config["method"] == "api":
-            await oracle.api(msg)
+            await check.api(msg)
         else:
-            await oracle.login(msg)
-        if oracle.alive:
+            await check.login(msg)
+        if check.alive:
             await message.edit("该租户名存在")
-        elif oracle.void:
+        elif check.void:
             await message.edit("该租户名不存在")
-        elif oracle.death:
+        elif check.death:
             await message.edit("该租户名已死")
         else:
             await message.edit("API出错，请稍后重试")
-        await oracle.clean()
+        await check.clean()
