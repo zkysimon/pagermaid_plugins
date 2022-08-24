@@ -121,6 +121,7 @@ async def oracle(message: Message):
         else:
             config["method"] = "api"
         sqlite["oracle"] = config
+        await message.edit(f"检测方式已修改为：{config['method']}")
     elif not msg:
         config = await config_check()
         task_list = []
@@ -132,7 +133,7 @@ async def oracle(message: Message):
             task = asyncio.create_task(result)
             task_list.append(task)
         await asyncio.gather(*task_list)
-        text = f"通过{config['method']}方式检测：\n你的甲骨文：{check.alive}个账号活着，{check.death}个账号已死"
+        text = f"通过{config['method']}方式检测：\n你的甲骨文：{check.alive}个账号活着，{check.death}个账号已死，{check.void}个账号不存在。"
         await message.edit(text)
         await check.clean()
         await asyncio.sleep(10)
