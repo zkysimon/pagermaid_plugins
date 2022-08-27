@@ -143,7 +143,7 @@ async def oracle(message: Message):
                 text += "\n已死的租户名为："
                 for i in check.dlist:
                     text += f"{i} "
-            if check.dlist:
+            if check.nlist:
                 text += "\n不存在的租户名为："
                 for j in check.nlist:
                     text += f"{j} "
