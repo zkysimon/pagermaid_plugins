@@ -11,6 +11,7 @@ class Oracle:
 
     def __init__(self):
         self.alive = self.death = self.void = 0
+        self.dlist = self.nlist = []
 
     async def login(self, tenant):
         url = f"https://myservices-{tenant}.console.oraclecloud.com/mycloud/cloudportal/gettingStarted"
@@ -18,16 +19,17 @@ class Oracle:
             resp = await client.head(url)
             if resp.status_code == 302:
                 self.alive += 1
-            else:
-                self.death += 1
         except:
-            self.void += 1
+            self.death += 1
+            self.dlist.append(tenant)
 
     async def api(self, tenant):
         url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
         resp = (await client.get(url)).json()
         if resp["tenantInHomeRegion"] and not resp["identityProviders"]:
             self.void += 1
+            self.nlist.append(tenant)
+            return
         region = resp.get("tenantHomeRegionUrl")
         if not region:
             region = "https://login.ap-tokyo-1.oraclecloud.com/"
@@ -37,9 +39,11 @@ class Oracle:
             self.alive += 1
         else:
             self.death += 1
+            self.dlist.append(tenant)
 
     async def clean(self):
         self.alive = self.death = self.void = 0
+        self.dlist = self.nlist = []
 
 
 async def obtain_message(context) -> str:
@@ -134,10 +138,20 @@ async def oracle(message: Message):
             task_list.append(task)
         await asyncio.gather(*task_list)
         text = f"通过{config['method']}方式检测：\n你的甲骨文：{check.alive}个账号活着，{check.death}个账号已死，{check.void}个账号不存在。"
+        if message.chat.id == message.from_user.id:
+            if check.dlist:
+                text += "\n已死的租户名为："
+                for i in check.dlist:
+                    text += f"{i} "
+            if check.dlist:
+                text += "\n不存在的租户名为："
+                for j in check.nlist:
+                    text += f"{j} "
         await message.edit(text)
         await check.clean()
-        await asyncio.sleep(10)
-        await message.delete()
+        if message.chat.id != message.from_user.id:
+            await asyncio.sleep(10)
+            await message.delete()
     else:
         if " " in msg:
             return await message.edit("请输入单个租户名")
@@ -147,11 +161,11 @@ async def oracle(message: Message):
         else:
             await check.login(msg)
         if check.alive:
-            await message.edit("该租户名存在")
+            await message.edit(f"租户名：{msg}存在")
         elif check.void:
-            await message.edit("该租户名不存在")
+            await message.edit(f"租户名：{msg}不存在")
         elif check.death:
-            await message.edit("该租户名已死")
+            await message.edit(f"租户名：{msg}已死")
         else:
             await message.edit("API出错，请稍后重试")
         await check.clean()
