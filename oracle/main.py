@@ -127,6 +127,7 @@ async def oracle(message: Message):
         sqlite["oracle"] = config
         await message.edit(f"检测方式已修改为：{config['method']}")
     elif not msg:
+        user = message.from_user.id if message.from_user else message.sender_chat.id
         config = await config_check()
         task_list = []
         for i in config["tenant"]:
@@ -138,7 +139,7 @@ async def oracle(message: Message):
             task_list.append(task)
         await asyncio.gather(*task_list)
         text = f"通过{config['method']}方式检测：\n你的甲骨文：{check.alive}个账号活着，{check.death}个账号已死，{check.void}个账号不存在。"
-        if message.chat.id == message.from_user.id:
+        if message.chat.id == user:
             if check.dlist:
                 text += "\n已死的租户名为："
                 for i in check.dlist:
@@ -149,7 +150,7 @@ async def oracle(message: Message):
                     text += f"{j} "
         await message.edit(text)
         await check.clean()
-        if message.chat.id != message.from_user.id:
+        if message.chat.id != user:
             await asyncio.sleep(10)
             await message.delete()
     else:

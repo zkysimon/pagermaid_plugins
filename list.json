@@ -82,7 +82,7 @@
         },
         {
             "name": "oracle",
-            "version": "2.13",
+            "version": "2.14",
             "section": "chat",
             "maintainer": "zimk",
             "size": "1.97 kb",
