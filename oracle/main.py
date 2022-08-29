@@ -8,6 +8,8 @@ class Oracle:
     alive: int
     death: int
     void: int
+    dlist: list
+    nlist: list
 
     def __init__(self):
         self.alive = self.death = self.void = 0
@@ -26,7 +28,7 @@ class Oracle:
     async def api(self, tenant):
         url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
         resp = (await client.get(url)).json()
-        if resp["tenantInHomeRegion"] and not resp["identityProviders"]:
+        if resp["tenantInHomeRegion"] and not resp["identityProviders"] and not reap["flights"]["isHenosisEnabled"]:
             self.void += 1
             self.nlist.append(tenant)
             return
