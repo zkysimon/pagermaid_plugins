@@ -7,13 +7,11 @@ from pagermaid.utils import Message, client
 class Oracle:
     alive: int
     death: int
-    void: int
     dlist: list
-    nlist: list
 
     def __init__(self):
-        self.alive = self.death = self.void = 0
-        self.dlist = self.nlist = []
+        self.alive = self.death = 0
+        self.dlist = []
 
     async def login(self, tenant):
         url = f"https://myservices-{tenant}.console.oraclecloud.com/mycloud/cloudportal/gettingStarted"
@@ -28,10 +26,6 @@ class Oracle:
     async def api(self, tenant):
         url = f"https://login.ap-tokyo-1.oraclecloud.com/v1/tenantMetadata/{tenant}"
         resp = (await client.get(url)).json()
-        if resp["tenantInHomeRegion"] and not resp["identityProviders"] and not resp["flights"]["isHenosisEnabled"]:
-            self.void += 1
-            self.nlist.append(tenant)
-            return
         region = resp.get("tenantHomeRegionUrl")
         if not region:
             region = "https://login.ap-tokyo-1.oraclecloud.com/"
@@ -44,8 +38,8 @@ class Oracle:
             self.dlist.append(tenant)
 
     async def clean(self):
-        self.alive = self.death = self.void = 0
-        self.dlist = self.nlist = []
+        self.alive = self.death = 0
+        self.dlist = []
 
 
 async def obtain_message(context) -> str:
@@ -140,16 +134,12 @@ async def oracle(message: Message):
             task = asyncio.create_task(result)
             task_list.append(task)
         await asyncio.gather(*task_list)
-        text = f"通过{config['method']}方式检测：\n你的甲骨文：{check.alive}个账号活着，{check.death}个账号已死，{check.void}个账号不存在。"
+        text = f"通过{config['method']}方式检测：\n你的甲骨文：{check.alive}个账号活着，{check.death}个账号已死或不存在。"
         if message.chat.id == user:
             if check.dlist:
                 text += "\n已死的租户名为："
                 for i in check.dlist:
                     text += f"{i} "
-            if check.nlist:
-                text += "\n不存在的租户名为："
-                for j in check.nlist:
-                    text += f"{j} "
         await message.edit(text)
         await check.clean()
         if message.chat.id != user:
@@ -165,10 +155,8 @@ async def oracle(message: Message):
             await check.login(msg)
         if check.alive:
             await message.edit(f"租户名：{msg}存在")
-        elif check.void:
-            await message.edit(f"租户名：{msg}不存在")
         elif check.death:
-            await message.edit(f"租户名：{msg}已死")
+            await message.edit(f"租户名：{msg}已死或不存在")
         else:
             await message.edit("API出错，请稍后重试")
         await check.clean()
