@@ -99,16 +99,6 @@
             "supported": true,
             "des-short": "偷贴纸",
             "des": "偷贴纸"
-        },
-        {
-            "name": "pmcaptcha",
-            "version": "2.25",
-            "section": "chat",
-            "maintainer": "cloudreflection,01101sam",
-            "size": "2.1k line",
-            "supported": true,
-            "des-short": "私聊人机验证插件",
-            "des": "私聊人机验证，助您远离广告烦恼"
         }
     ]
 }
