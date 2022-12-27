@@ -1,9 +1,11 @@
 import os
 from pagermaid.listener import listener
-from pagermaid.utils import Message, client
-from pymtts import async_Mtts
+from pagermaid.utils import Message, client, pip_install
 from pagermaid.single_utils import sqlite
 
+pip_install("pymtts")
+
+from pymtts import async_Mtts
 
 default_config = {
     "short_name": "zh-CN-XiaoxiaoNeural",
