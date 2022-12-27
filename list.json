@@ -41,16 +41,6 @@
             "des": ",ip [ip] ,route[ip]"
         },
         {
-            "name": "bing",
-            "version": "1.03",
-            "section": "chat",
-            "maintainer": "zimk",
-            "size": "1.4 kb",
-            "supported": true,
-            "des-short": "使用 bing 查询",
-            "des": "使用 bing 查询"
-        },
-        {
             "name": "icp",
             "version": "1.01",
             "section": "chat",
