@@ -91,10 +91,10 @@
             "des": ",ipcheck [ip:port]"
         },
         {
-            "name": "stickers",
-            "version": "1.02",
+            "name": "sticker",
+            "version": "1.00",
             "section": "chat",
-            "maintainer": "zimk",
+            "maintainer": "@Edgecoordinates",
             "size": "1.84 kb",
             "supported": true,
             "des-short": "偷贴纸",
