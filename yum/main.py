@@ -43,10 +43,10 @@ async def download(name):
 
 def update_version(plugin_name, version):
     plugin_directory = f"{working_dir}{sep}plugins{sep}"
-    with open(f"{plugin_directory}yumversion.json", 'r', encoding="utf-8") as f:
+    with open(f"{plugin_directory}version.json", 'r', encoding="utf-8") as f:
         version_json = json.load(f)
         version_json[plugin_name] = version
-    with open(f"{plugin_directory}yumversion.json", 'w') as f:
+    with open(f"{plugin_directory}version.json", 'w') as f:
         json.dump(version_json, f)
 
 
@@ -80,7 +80,7 @@ async def plugin(message: Message):
                                f"{lang('apt_plugin')} "
                                f"{path.basename(file_path)[:-3]} {lang('apt_installed')}")
             await log(f"{lang('apt_install_success')} {path.basename(file_path)[:-3]}.")
-            reload_all()
+            await reload_all()
         elif len(message.parameter) >= 2:
             process_list = message.parameter
             message = await message.edit(lang('apt_processing'))
@@ -91,8 +91,8 @@ async def plugin(message: Message):
             plugin_list = await client.get(f"https://git.llc/zimk/pagermaid_plugins/raw/branch/main/list.json")
             plugin_list = plugin_list.json()["list"]
             for i in process_list:
-                if exists(f"{plugin_directory}yumversion.json"):
-                    with open(f"{plugin_directory}yumversion.json", 'r', encoding="utf-8") as f:
+                if exists(f"{plugin_directory}version.json"):
+                    with open(f"{plugin_directory}version.json", 'r', encoding="utf-8") as f:
                         version_json = json.load(f)
                     try:
                         plugin_version = version_json[i]
@@ -100,7 +100,7 @@ async def plugin(message: Message):
                         plugin_version = 0
                 else:
                     temp_dict = {}
-                    with open(f"{plugin_directory}yumversion.json", 'w') as f:
+                    with open(f"{plugin_directory}version.json", 'w') as f:
                         json.dump(temp_dict, f)
                     plugin_version = 0
                 temp = True
@@ -131,7 +131,7 @@ async def plugin(message: Message):
             restart = len(success_list) > 0
             await message.edit(text)
             if restart:
-                reload_all()
+                await reload_all()
         else:
             await message.edit(lang('arg_error'))
     elif message.parameter[0] == "remove":
@@ -139,15 +139,15 @@ async def plugin(message: Message):
             if exists(f"{plugin_directory}{message.parameter[1]}.py") or \
                     exists(f"{plugin_directory}{message.parameter[1]}.py.disabled"):
                 remove_plugin(message.parameter[1])
-                if exists(f"{plugin_directory}yumversion.json"):
-                    with open(f"{plugin_directory}yumversion.json", 'r', encoding="utf-8") as f:
+                if exists(f"{plugin_directory}version.json"):
+                    with open(f"{plugin_directory}version.json", 'r', encoding="utf-8") as f:
                         version_json = json.load(f)
                     version_json[message.parameter[1]] = "0.0"
-                    with open(f"{plugin_directory}yumversion.json", 'w') as f:
+                    with open(f"{plugin_directory}version.json", 'w') as f:
                         json.dump(version_json, f)
                 await message.edit(f"{lang('apt_remove_success')} {message.parameter[1]}")
                 await log(f"{lang('apt_remove')} {message.parameter[1]}.")
-                reload_all()
+                await reload_all()
             elif "/" in message.parameter[1]:
                 await message.edit(lang('arg_error'))
             else:
@@ -198,7 +198,7 @@ async def plugin(message: Message):
                 await message.edit(f"{lang('apt_plugin')} {message.parameter[1]} "
                                    f"{lang('apt_enable')}")
                 await log(f"{lang('apt_enable')} {message.parameter[1]}.")
-                reload_all()
+                await reload_all()
             else:
                 await message.edit(lang('apt_not_exist'))
         else:
@@ -211,7 +211,7 @@ async def plugin(message: Message):
                 await message.edit(f"{lang('apt_plugin')} {message.parameter[1]} "
                                    f"{lang('apt_disable')}")
                 await log(f"{lang('apt_disable')} {message.parameter[1]}.")
-                reload_all()
+                await reload_all()
             else:
                 await message.edit(lang('apt_not_exist'))
         else:
@@ -243,10 +243,10 @@ async def plugin(message: Message):
         un_need_update = lang('apt_no_update')
         need_update = f"\n{lang('apt_updated')}:"
         need_update_list = []
-        if not exists(f"{plugin_directory}yumversion.json"):
+        if not exists(f"{plugin_directory}version.json"):
             await message.edit(lang('apt_why_not_install_a_plugin'))
             return
-        with open(f"{plugin_directory}yumversion.json", 'r', encoding="utf-8") as f:
+        with open(f"{plugin_directory}version.json", 'r', encoding="utf-8") as f:
             version_json = json.load(f)
         plugin_list = await client.get(f"https://git.llc/zimk/pagermaid_plugins/raw/branch/main/list.json")
         plugin_online = plugin_list.json()["list"]
@@ -280,15 +280,15 @@ async def plugin(message: Message):
                         await download(i)
                     except AssertionError:
                         continue
-                    with open(f"{plugin_directory}yumversion.json", "r", encoding="utf-8") as f:
+                    with open(f"{plugin_directory}version.json", "r", encoding="utf-8") as f:
                         version_json = json.load(f)
                     for m in plugin_online:
                         if m["name"] == i:
                             version_json[i] = m["version"]
-                    with open(f"{plugin_directory}yumversion.json", "w") as f:
+                    with open(f"{plugin_directory}version.json", "w") as f:
                         json.dump(version_json, f)
                 await message.edit(f"<b>{lang('apt_name')}</b>\n\n" + lang("apt_reading_list") + need_update)
-                reload_all()
+                await reload_all()
     elif message.parameter[0] == "search":
         if len(message.parameter) == 1:
             await message.edit(lang("apt_search_no_name"))
@@ -334,12 +334,12 @@ async def plugin(message: Message):
             else:
                 await message.edit(search_result)
     elif message.parameter[0] == "export":
-        if not exists(f"{plugin_directory}yumversion.json"):
+        if not exists(f"{plugin_directory}version.json"):
             await message.edit(lang("apt_why_not_install_a_plugin"))
             return
         message = await message.edit(lang("stats_loading"))
         list_plugin = []
-        with open(f"{plugin_directory}yumversion.json", 'r', encoding="utf-8") as f:
+        with open(f"{plugin_directory}version.json", 'r', encoding="utf-8") as f:
             version_json = json.load(f)
         plugin_list = await client.get(f"https://git.llc/zimk/pagermaid_plugins/raw/branch/main/list.json")
         plugin_online = plugin_list.json()["list"]
@@ -353,7 +353,7 @@ async def plugin(message: Message):
         if len(list_plugin) == 0:
             await message.edit(lang("apt_why_not_install_a_plugin"))
         else:
-            await message.edit(",apt install " + " ".join(list_plugin))
+            await message.edit(",yum install " + " ".join(list_plugin))
     elif message.parameter[0] == "reload":
         # bot.dispatcher.remove_all_handlers()  # noqa
         scheduler.remove_all_jobs()
