@@ -2,23 +2,13 @@
     "list": [
         {
             "name": "yum",
-            "version": "1.04",
+            "version": "1.05",
             "section": "daily",
             "maintainer": "xtaodada",
             "size": "30 kb",
             "supported": true,
             "des-short": "安装插件",
             "des": "用于管理安装到 PagerMaid-Pyro 的插件。"
-        },
-        {
-            "name": "kfc",
-            "version": "1.01",
-            "section": "daily",
-            "maintainer": "xtaodada",
-            "size": "17.08 kb",
-            "supported": true,
-            "des-short": "kfc疯狂星期四",
-            "des": "kfc疯狂星期四"
         },
         {
             "name": "mtts",
@@ -29,26 +19,6 @@
             "supported": true,
             "des-short": "微软文本转语音",
             "des": ",mtts 微软文本转语音"
-        },
-        {
-            "name": "ip",
-            "version": "1.01",
-            "section": "chat",
-            "maintainer": "zimk",
-            "size": "1.8 kb",
-            "supported": true,
-            "des-short": "查询ip信息",
-            "des": ",ip [ip] ,route[ip]"
-        },
-        {
-            "name": "icp",
-            "version": "1.01",
-            "section": "chat",
-            "maintainer": "zimk",
-            "size": "1.49 kb",
-            "supported": true,
-            "des-short": "查询icp备案消息",
-            "des": ",icp 查询icp备案消息"
         },
         {
             "name": "lunar",
@@ -81,21 +51,11 @@
             "des": ",oracle [tenant]/add [tenant]/del [tenant]/delall/change"
         },
         {
-            "name": "ipcheck",
-            "version": "1.06",
-            "section": "chat",
-            "maintainer": "zimk",
-            "size": "1.84 kb",
-            "supported": true,
-            "des-short": "ip被墙检测",
-            "des": ",ipcheck [ip:port]"
-        },
-        {
             "name": "sticker",
             "version": "1.00",
             "section": "chat",
             "maintainer": "@Edgecoordinates",
-            "size": "1.84 kb",
+            "size": "12 kb",
             "supported": true,
             "des-short": "偷贴纸",
             "des": "偷贴纸"
