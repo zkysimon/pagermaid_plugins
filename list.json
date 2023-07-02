@@ -1,16 +1,6 @@
 {
     "list": [
         {
-            "name": "yum",
-            "version": "1.05",
-            "section": "daily",
-            "maintainer": "xtaodada",
-            "size": "30 kb",
-            "supported": true,
-            "des-short": "安装插件",
-            "des": "用于管理安装到 PagerMaid-Pyro 的插件。"
-        },
-        {
             "name": "mtts",
             "version": "1.08",
             "section": "chat",
