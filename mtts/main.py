@@ -33,8 +33,8 @@ async def config_set(configset, cmd) -> bool:
 async def getmodel():
     headers = {'origin': 'https://azure.microsoft.com'}
     url = "https://eastus.api.speech.microsoft.com/cognitiveservices/voices/list"
-    response = await client.get(url, headers)
-    data = json.loads(response)
+    response = await client.get(url=url, headers=headers)
+    data = json.loads(response.read())
     return data
 
 
