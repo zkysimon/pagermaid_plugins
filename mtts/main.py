@@ -35,8 +35,7 @@ async def getmodel():
     url = "https://eastus.api.speech.microsoft.com/cognitiveservices/voices/list"
     response = await client.get(url, headers)
     data = json.loads(response)
-    lang_models.extend([MttsLangModel(m) for m in data])
-    return lang_models
+    return data
 
 
 @listener(command="mtts", description="文本转语音",
@@ -73,11 +72,11 @@ async def mtts(msg: Message):
             return await msg.edit("无法访问微软api，请稍后重试。")
         s = "code | local name | Gender | LocaleName\r\n"
         for model in voice_model:
-            if tag in model.ShortName or tag in model.Locale or tag in model.LocaleName:
-                s += "{} | {} | {} | {}\r\n".format(model.ShortName,
-                                                    model.LocalName,
-                                                    model.Gender,
-                                                    model.LocaleName)
+            if tag in model['ShortName'] or tag in model['LocalName'] or tag in model['LocaleName']:
+                s += "{} | {} | {} | {}\r\n".format(model['ShortName'],
+                                                    model['LocalName'],
+                                                    model['Gender'],
+                                                    model['LocaleName'])
         await msg.edit(s)
     elif opt and opt != " ":
         config = await config_check()
