@@ -20,7 +20,7 @@ async def prefixes(msg: Message):
         old_prefixes = reset
     else:
         old_prefixes = sqlite["prefixes"]["prefixes"]
-    result = await execute(f"sed -i \'s/pattern = fr\"^({old_prefixes})/pattern = fr\"^({prefixes})/g\' pagermaid/listener.py")
+    result = await execute(f"sed -i \'s/pattern = rf\"^({old_prefixes})/pattern = rf\"^({prefixes})/g\' pagermaid/listener.py")
     sqlite["prefixes"] = {"prefixes": prefixes}
     if len(result) > 0:
         await msg.edit(result)
