@@ -11,16 +11,6 @@
             "des": ",mtts 微软文本转语音"
         },
         {
-            "name": "lunar",
-            "version": "1.01",
-            "section": "daily",
-            "maintainer": "zimk",
-            "size": "449 b",
-            "supported": true,
-            "des-short": "查询今日黄历",
-            "des": "查询今日黄历"
-        },
-        {
             "name": "prefixes",
             "version": "2.01",
             "section": "chat",
@@ -29,16 +19,6 @@
             "supported": true,
             "des-short": "更改命令前缀",
             "des": ",prefixes [新符号1|新符号2|...] / reset"
-        },
-        {
-            "name": "oracle",
-            "version": "2.16",
-            "section": "chat",
-            "maintainer": "zimk",
-            "size": "1.97 kb",
-            "supported": true,
-            "des-short": "查询oracle账号存活情况",
-            "des": ",oracle [tenant]/add [tenant]/del [tenant]/delall/change"
         },
         {
             "name": "sticker",
